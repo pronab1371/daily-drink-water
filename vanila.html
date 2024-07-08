@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="./src/index.css">
+
+    <title>Daily Drink Water Goal using JavaScript - @code.scientist x @codingtorque</title>
+</head>
+
+<body>
+<h1>Drink Water</h1>
+<h3>Goal: 2 Liters</h3>
+
+<div class="cup">
+    <div class="remained" id="remained">
+        <span id="liters"></span>
+        <small>Remained</small>
+    </div>
+
+    <div class="percentage" id="percentage"></div>
+</div>
+
+<p class="text">Select how many glasses of water that you have drank</p>
+
+<div class="cups">
+    <div class="cup cup-small">250 ml</div>
+    <div class="cup cup-small">250 ml</div>
+    <div class="cup cup-small">250 ml</div>
+    <div class="cup cup-small">250 ml</div>
+    <div class="cup cup-small">250 ml</div>
+    <div class="cup cup-small">250 ml</div>
+    <div class="cup cup-small">250 ml</div>
+    <div class="cup cup-small">250 ml</div>
+</div><!-- Further code here -->
+
+<script type="text/javascript">
+    const smallCups = document.querySelectorAll('.cup-small')
+    const liters = document.getElementById('liters')
+    const percentage = document.getElementById('percentage')
+    const remained = document.getElementById('remained')
+
+    updateBigCup()
+
+    smallCups.forEach((cup, idx) => {
+        cup.addEventListener('click', () => highlightCups(idx))
+    })
+
+    function highlightCups(idx) {
+        if (idx === 7 && smallCups[idx].classList.contains("full")) idx--;
+        else if (smallCups[idx].classList.contains('full') && !smallCups[idx].nextElementSibling.classList.contains('full')) {
+            idx--
+        }
+
+        smallCups.forEach((cup, idx2) => {
+            if (idx2 <= idx) {
+                cup.classList.add('full')
+            } else {
+                cup.classList.remove('full')
+            }
+        })
+
+        updateBigCup()
+    }
+
+    function updateBigCup() {
+        const fullCups = document.querySelectorAll('.cup-small.full').length
+        const totalCups = smallCups.length
+
+        if (fullCups === 0) {
+            percentage.style.visibility = 'hidden'
+            percentage.style.height = 0
+        } else {
+            percentage.style.visibility = 'visible'
+            percentage.style.height = `${fullCups / totalCups * 330}px`
+            percentage.innerText = `${fullCups / totalCups * 100}%`
+        }
+
+        if (fullCups === totalCups) {
+            remained.style.visibility = 'hidden'
+            remained.style.height = 0
+        } else {
+            remained.style.visibility = 'visible'
+            liters.innerText = `${2 - (250 * fullCups / 1000)}L`
+        }
+    }
+</script>
+</body>
+
+</html>
